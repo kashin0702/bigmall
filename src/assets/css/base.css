@@ -1,0 +1,14 @@
+:root {
+  --color-text: #fff;
+  --color-high-text: #ffff33;
+}
+
+*,*::after,*::before {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  /* background: rgb(221, 218, 218); */
+}
