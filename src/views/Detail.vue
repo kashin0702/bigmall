@@ -35,9 +35,14 @@
     <BackTop v-if="contentScroll"/>
     </div>
 
+    <!-- 商品加入购物车提示 -->
+    <Toast v-show="show" :message="message"/>
+
     <!-- 底部购物车栏 放在content容器外-->
     <!-- 接收传过来的购物车事件 -->
     <BottomBar @addToCart="addToCart"/>
+
+    
   </div>
 </template>
 
@@ -57,6 +62,7 @@ import BackTop from 'components/BackTop'
 import RateInfo from  './DetailCompo/RateInfo'
 import DetailRecommend from './DetailCompo/DetailRecommend'
 import BottomBar from './DetailCompo/BottomBar'
+import Toast from 'components/Toast'
 
 export default {
   name: 'Detail',
@@ -71,7 +77,8 @@ export default {
     RateInfo,
     DetailRecommend,
     BackTop,
-    BottomBar
+    BottomBar,
+    Toast
   },
   data(){
     return {
@@ -96,7 +103,9 @@ export default {
       titles: ['商品','参数','评论','推荐'],
       currentIndex: 0,    //用来保存titles的索引值
       rateInfo: [],  //评论数据
-      recommend: []  //推荐数据
+      recommend: [],  //推荐数据
+      show: false,  //购物车提示框是否显示
+      message: ''   //购物车提示框的显示内容
     }
   },
   created(){
@@ -177,7 +186,12 @@ export default {
       
       //调用store-action异步模块内的的getAddGoods方法, 并传入这个对象给$store
       this.$store.dispatch('getAddGoods',product).then(res => { //getAddGoods方法包装了一层promise,这里就可以回调then
-        
+        console.log(res);
+        this.show = true
+        this.message = res
+        setTimeout(() => {
+          this.show = false   //1.5秒后toast框消失
+        },1500)
       })
     }
   }

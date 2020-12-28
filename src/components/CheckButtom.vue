@@ -12,7 +12,7 @@ export default {
     checkClick() {
       this.$emit("checkClick");
     },
-  },
+  },  
   props: {
     checked: {
       type: Boolean,

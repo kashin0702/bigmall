@@ -1,7 +1,9 @@
 <template>
   <div class="count-bar">
     <div class="select-all">
-      <CheckButtom @click.native="selectAll" class="checked"/>
+      <!-- 给组件的checked传一个selectAll计算属性,用来判断是否全选 -->
+      <!-- 注意点：相同子组件在不同地方复用时，可以传不同的checked值，要灵活运用 -->
+      <CheckButtom class="check-buttom" :checked="selectAll" @checkClick="buttomClick"/>
       <span id="select">全选</span>
       <span id="total">合计: ¥{{ totalCount }}</span>
     </div>
@@ -18,6 +20,11 @@ export default {
   components: {
     CheckButtom: CheckButtom,
   },
+  data(){
+    return {
+      
+    }
+  },
   computed: {
     //计算选中的商品总价
     totalCount() {
@@ -31,6 +38,7 @@ export default {
         }, 0)     //reduce中的0表示递归初始值,不设置就是数组第一项
         .toFixed(2); 
     },
+
     //计算总商品数量
     totalGoods() {
       return this.$store.state.cartList
@@ -41,14 +49,27 @@ export default {
           return prev + cur.count;
         }, 0);
     },
+    selectAll(){
+      let arr = this.$store.state.cartList
+      return arr.every(item => {   //对数组进行every判断，若item.checked全选返回true,若有一个未选中，则返回false
+        return item.checked
+      })
+    }
   },
   methods: {
-    selectAll() {
-      for(let item of this.$store.state.cartList){
-
+    buttomClick(){
+      if(this.selectAll){   //利用computed获取checkButtom的checked值
+        this.$store.state.cartList.forEach(item => {
+          item.checked = false   //item.check会直接影响selectAll的值 所以不用对这个值取反
+        })
+      }else{
+        this.$store.state.cartList.forEach(item => {
+          item.checked = true
+        })
       }
-    },
-  },
+    }
+  }
+  
 };
 </script>
 
@@ -89,7 +110,5 @@ img {
 span {
   font-size: 14px;
 }
-.checked {
-  border: 2px solid red;
-}
+
 </style>
