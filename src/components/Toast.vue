@@ -30,10 +30,6 @@ export default {
     transform: translate(-50%,-50%);
     opacity: 0.75;
     z-index: 100;
-    animation: showToast 1s;
-  }
-  @keyframes showToast {
-    from {opacity: 0;}
-    to {opacity: 0.75;}
+    /* display: none; */
   }
 </style>
